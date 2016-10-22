@@ -1,5 +1,4 @@
-﻿using SupercellProxy.JSON_Parser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -13,7 +12,6 @@ namespace SupercellProxy
     {
         public static List<Client> ClientPool = new List<Client>();
 
-        
         /// <summary>
         /// Starts the proxy
         /// </summary>
@@ -56,10 +54,9 @@ namespace SupercellProxy
                 // Start the proxy
                 Logger.Log("Starting the proxy..");
                 Logger.Log("Checking directories..");
-
-                if (!Directory.Exists(Environment.CurrentDirectory + @"\\JsonPackets\\"))
-                    Directory.CreateDirectory(Environment.CurrentDirectory + @"\\JsonPackets\\");
-
+                // Check directories
+                if (!Directory.Exists("Logs"))
+                    Directory.CreateDirectory("Logs");
                 if (!Directory.Exists("Packets"))
                     Directory.CreateDirectory("Packets");
 
@@ -72,9 +69,6 @@ namespace SupercellProxy
                 Socket ClientListener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 ClientListener.Bind(endPoint);
                 ClientListener.Listen(100);
-
-                // Initialize the JSON Packets
-                JSONPacketManager.Initialize();
 
                 // Listen for connections
                 Logger.Log("Connect to " + Helper.LocalNetworkIP + " and you should be good to go.");

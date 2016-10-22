@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using SupercellProxy.JSON_Parser;
 
 namespace SupercellProxy
 {
@@ -12,11 +11,9 @@ namespace SupercellProxy
         CONFIG, // A configuration value (i.e. "Host")
         PACKET, // A client/server packet (i.e. KeepAlive)
         API, // An API message (i.e. "WebAPI started")
-        FIELD,
-        PACKETINFO,
         EXCEPTION // An exception (i.e. NullReferenceException)
     }
-    
+
     class Logger
     {
         public static void CenterStr(string str)
@@ -26,35 +23,6 @@ namespace SupercellProxy
             Console.WriteLine(str);
             // reset
             Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
-        }
-        
-        private static void LogParsed(string prefix, string toLog, LogType l)
-        {
-
-            Console.ForegroundColor = l == LogType.FIELD ? ConsoleColor.Blue : l == LogType.PACKETINFO ? ConsoleColor.Magenta : ConsoleColor.Black;
-
-            Console.Write("[{0}] ", prefix);
-
-            Console.ResetColor();
-           
-            Console.WriteLine(toLog);
-        }
-
-        public static void LogParsedPacket(ParsedPacket pp)
-        {
-            Console.WriteLine("---------------------------------------------------------------------------------------------");
-            LogParsed(pp.PacketName, "PacketID: " + pp.PacketID, LogType.PACKETINFO);
-            LogParsed(pp.PacketName, "PayloadLength: " + pp.PayloadLength, LogType.PACKETINFO);
-
-            if (pp.ParsedFields != null)
-            {
-                foreach (var v in pp.ParsedFields)
-                {
-                    LogParsed(v.FieldName, "FieldLength: " + v.FieldLength, LogType.FIELD);
-                    LogParsed(v.FieldName, "FieldType: " + v.FieldType, LogType.FIELD);
-                    LogParsed(v.FieldName, "FieldValue: " + v.FieldValue, LogType.FIELD);
-                }
-            }
         }
 
         /// <summary>

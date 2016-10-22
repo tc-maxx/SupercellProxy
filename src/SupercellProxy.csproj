@@ -66,10 +66,6 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -129,12 +125,6 @@
     <Compile Include="Crypto\Piranha\vInt\vInt.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\NativeCalls.cs" />
-    <Compile Include="JSON Parser\JSONPacketField.cs" />
-    <Compile Include="JSON Parser\JSONPacketManager.cs" />
-    <Compile Include="JSON Parser\JSONPacketWrapper.cs" />
-    <Compile Include="JSON Parser\JsonParseHelper.cs" />
-    <Compile Include="JSON Parser\ParsedField.cs" />
-    <Compile Include="JSON Parser\ParsedPacket.cs" />
     <Compile Include="Logger\Logger.cs" />
     <!--<Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\LogType.cs" />-->
@@ -160,7 +150,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
