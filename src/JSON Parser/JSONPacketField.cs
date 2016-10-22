@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SupercellProxy.JSON_Parser
 {
-    enum FieldType
+    internal enum FieldType
     {
         String,
         SupercellString,
@@ -27,25 +23,17 @@ namespace SupercellProxy.JSON_Parser
         UShort
     }
 
-    class JSONPacketField
+    internal class JSONPacketField
     {
         /// <summary>
-        /// The Name of the Field
+        ///     The Name of the Field
         /// </summary>
-        public string FieldName
-        {
-            get;
-            set;
-        }
+        public string FieldName { get; set; }
 
         /// <summary>
-        /// The Data Type of the Field
+        ///     The Data Type of the Field
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public FieldType FieldType
-        {
-            get;
-            set;
-        }
+        public FieldType FieldType { get; set; }
     }
 }

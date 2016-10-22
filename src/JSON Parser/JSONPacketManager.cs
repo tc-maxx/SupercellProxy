@@ -48,9 +48,7 @@ namespace SupercellProxy.JSON_Parser
             if ((wrapper == null) || wrapper.ShouldLog || wrapper.ShouldExport)
             {
                 if ((wrapper == null) || wrapper.ShouldLog)
-                {
                     Logger.LogParsedPacket(pp);
-                }
 
                 if ((wrapper == null) || wrapper.ShouldExport)
                 {
@@ -59,7 +57,7 @@ namespace SupercellProxy.JSON_Parser
 
                     using (var file = File.CreateText(path))
                     {
-                        JsonSerializer serializer = new JsonSerializer();
+                        var serializer = new JsonSerializer();
                         serializer.Formatting = Formatting.Indented;
                         serializer.Serialize(file, pp);
                     }
@@ -78,7 +76,7 @@ namespace SupercellProxy.JSON_Parser
             foreach (var filePath in files)
                 using (var file = File.OpenText(filePath))
                 {
-                    JsonSerializer serializer = new JsonSerializer();
+                    var serializer = new JsonSerializer();
 
                     var wrapper = (JSONPacketWrapper) serializer.Deserialize(file, typeof(JSONPacketWrapper));
 
@@ -92,7 +90,7 @@ namespace SupercellProxy.JSON_Parser
         public static void Initialize()
         {
             LoadDefinitions();
-            Logger.Log("Successfully load " + JsonPackets.Count + " Json Definitions into Memory.", LogType.INFO);
+            Logger.Log("Successfully load " + JsonPackets.Count + " Json Definitions into Memory.");
         }
     }
 }
