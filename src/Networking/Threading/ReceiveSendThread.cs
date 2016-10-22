@@ -84,16 +84,14 @@ namespace SupercellProxy
                             if (state.GetType() == typeof(ClientState))
                             {
                                 Packet ClientPacket = new Packet(state.packet, PacketDestination.FROM_CLIENT);
-                                ClientPacket.Export();                           
-                                Logger.Log(ClientPacket.ID + " (" + ClientPacket.DecryptedPayload.Length + " bytes)", LogType.PACKET);                      
+                                JSON_Parser.JSONPacketManager.HandlePacket(ClientPacket);                
                                 ServerSocket.Send(ClientPacket.Rebuilt);
                                 ClientPacket = null;
                             }
                             else if (state.GetType() == typeof(ServerState))
                             {
                                 Packet ServerPacket = new Packet(state.packet, PacketDestination.FROM_SERVER);
-                                ServerPacket.Export();
-                                Logger.Log(ServerPacket.ID + " (" + ServerPacket.DecryptedPayload.Length + " bytes)", LogType.PACKET);
+                                JSON_Parser.JSONPacketManager.HandlePacket(ServerPacket);
                                 ClientSocket.Send(ServerPacket.Rebuilt);
                                 ServerPacket = null;
                             }         
