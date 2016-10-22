@@ -56,6 +56,7 @@ namespace SupercellProxy
                 // Start the proxy
                 Logger.Log("Starting the proxy..");
                 Logger.Log("Checking directories..");
+<<<<<<< HEAD
 
                 if (!Directory.Exists(Environment.CurrentDirectory + @"\\JsonPackets\\"))
                     Directory.CreateDirectory(Environment.CurrentDirectory + @"\\JsonPackets\\");
@@ -63,6 +64,8 @@ namespace SupercellProxy
                 if (!Directory.Exists("Packets"))
                     Directory.CreateDirectory("Packets");
 
+=======
+>>>>>>> origin/master
 
                 // Get latest public key
                 Keys.GetPublicKey();

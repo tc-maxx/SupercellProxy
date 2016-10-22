@@ -16,9 +16,20 @@ namespace SupercellProxy
         PACKETINFO,
         EXCEPTION // An exception (i.e. NullReferenceException)
     }
+<<<<<<< HEAD
     
     class Logger
+=======
+
+    static class Logger
+>>>>>>> origin/master
     {
+        static Logger()
+        {
+            if (!Directory.Exists("Logs"))
+                Directory.CreateDirectory("Logs");
+        }
+
         public static void CenterStr(string str)
         {
             // (window width - strlen) / 2 = center
@@ -91,11 +102,6 @@ namespace SupercellProxy
 
             // Log line to file
             string path = Environment.CurrentDirectory + @"\\Logs\\" + DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy") + ".log";
-
-            // Make sure the Logs Directory exists to prevent crash.
-            if (!Directory.Exists(Environment.CurrentDirectory + @"\\Logs\\"))
-                Directory.CreateDirectory(Environment.CurrentDirectory + @"\\Logs\\");
-
             using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
             {
                 using (StreamWriter StreamWriter = new StreamWriter(fs))
