@@ -11,6 +11,7 @@ namespace SupercellProxy.JSON_Parser
         LittleEndianInt64,
         LittleEndianUInt,
         Int,
+        Bytes,
         Int64,
         LittleEndianUInt64,
         UInt,
@@ -29,6 +30,12 @@ namespace SupercellProxy.JSON_Parser
         ///     The Name of the Field
         /// </summary>
         public string FieldName { get; set; }
+
+        /// <summary>
+        /// If Field Type is Bytes specifify Length to read
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string BytesToRead { get; set; }
 
         /// <summary>
         ///     The Data Type of the Field

@@ -1,0 +1,40 @@
+{
+  "PacketID": 10100,
+  "PacketName": "ClientHelloMessage",
+  "ShouldLog": true,
+  "ShouldExport": true,
+  "Fields": [
+    {
+      "FieldName": "Protocol",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "Key Version",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "Major Version",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "Minor Version",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "Build Version",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "Masterhash",
+      "FieldType": "SupercellString"
+    },
+	{
+      "FieldName": "DeviceType",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "App Store",
+      "FieldType": "LittleEndianInt"
+    }
+  ]
+}

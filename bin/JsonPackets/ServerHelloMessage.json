@@ -1,0 +1,17 @@
+{
+  "PacketID": 20100,
+  "PacketName": "ServerHelloMessage",
+  "ShouldLog": true,
+  "ShouldExport": true,
+  "Fields": [
+    {
+      "FieldName": "Size",
+      "FieldType": "LittleEndianInt"
+    },
+	{
+      "FieldName": "Bytes",
+	  "BytesToRead": "Size",
+      "FieldType": "Bytes"
+    }
+  ]
+}
