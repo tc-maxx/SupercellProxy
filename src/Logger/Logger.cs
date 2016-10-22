@@ -16,13 +16,10 @@ namespace SupercellProxy
         PACKETINFO,
         EXCEPTION // An exception (i.e. NullReferenceException)
     }
-<<<<<<< HEAD
+
     
-    class Logger
-=======
 
     static class Logger
->>>>>>> origin/master
     {
         static Logger()
         {
