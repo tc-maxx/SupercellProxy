@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SupercellProxy.JSON_Parser
+namespace SupercellProxy
 {
     internal class JSONPacketWrapper
     {

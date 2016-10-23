@@ -13,9 +13,8 @@ namespace SupercellProxy
             // Parse console args
             new ConsoleArgs(args).Parse();
 
-            // Console configurations
-            Console.Title = "SupercellProxy - Let's play " + Config.Game.ReadableName() + "!";
-            Console.InputEncoding = Encoding.UTF8;
+            // Console title
+            Console.Title =  "▁ ▂ ▄ ▅ ▆ ▇ █ SupercellProxy  █ ▇ ▆ ▅ ▄ ▂ ▁";
 
             // Disable resizing/maximizing
             NativeCalls.DisableMenus();

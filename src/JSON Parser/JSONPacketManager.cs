@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace SupercellProxy.JSON_Parser
+namespace SupercellProxy
 {
     internal class JSONPacketManager
     {

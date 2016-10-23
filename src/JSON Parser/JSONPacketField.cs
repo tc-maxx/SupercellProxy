@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace SupercellProxy.JSON_Parser
+namespace SupercellProxy
 {
     internal enum FieldType
     {

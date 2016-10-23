@@ -1,23 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using SupercellProxy.JSON_Parser;
 
 namespace SupercellProxy
 {
     enum LogType
     {
-        INFO, // A normal text (i.e. "Proxy started")
-        WARNING, // A warning (i.e. 2 running proxys)
-        CONFIG, // A configuration value (i.e. "Host")
-        PACKET, // A client/server packet (i.e. KeepAlive)
-        API, // An API message (i.e. "WebAPI started")
+        INFO, 
+        WARNING,
+        CONFIG, 
+        PACKET, 
+        API, 
         FIELD,
         PACKETINFO,
-        EXCEPTION // An exception (i.e. NullReferenceException)
+        EXCEPTION,
     }
-
-    
 
     static class Logger
     {
@@ -40,11 +37,8 @@ namespace SupercellProxy
         {
 
             Console.ForegroundColor = l == LogType.FIELD ? ConsoleColor.Blue : l == LogType.PACKETINFO ? ConsoleColor.Magenta : ConsoleColor.Black;
-
             Console.Write("[{0}] ", prefix);
-
-            Console.ResetColor();
-           
+            Console.ResetColor();          
             Console.WriteLine(toLog);
         }
 
@@ -65,6 +59,7 @@ namespace SupercellProxy
             }
         }
 
+    
         /// <summary>
         /// Logs passed text
         /// </summary>
@@ -107,6 +102,15 @@ namespace SupercellProxy
                     StreamWriter.Close();
                 }
             }
+        }
+
+        /// <summary>
+        /// Logs a packet
+        /// </summary>
+        /// <param name="p"></param>
+        public static void LogPacket(Packet p)
+        {
+
         }
     }
 }

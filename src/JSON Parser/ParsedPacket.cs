@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SupercellProxy.JSON_Parser
+namespace SupercellProxy
 {
     internal class ParsedPacket
     {

@@ -37,7 +37,7 @@ namespace SupercellProxy
             if (Config.Game == Game.BOOM_BEACH)
                 OriginalPublicKey = "3BF256F1C9457F4465625DBA145F2BA2F65B64338351590E796E8119E648755D".ToByteArray();
             else if (Config.Game == Game.CLASH_OF_CLANS)
-                OriginalPublicKey = "BB9CA4C6B52ECDB40267C3BCCA03679201A403EF6230B9E488DB949B58BC7479".ToByteArray();
+                OriginalPublicKey = "349CE78B78A06A4E94645435ACBA1DFFFC40CC2276558ED2D118F1343A197876".ToByteArray();
             else if (Config.Game == Game.CLASH_ROYALE)
                 OriginalPublicKey = "BBDBA8653396D1DF84EFAEA923ECD150D15EB526A46A6C39B53DAC974FFF3829".ToByteArray();
 

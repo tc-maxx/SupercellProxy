@@ -7,12 +7,16 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
-using SupercellProxy.JSON_Parser;
 
 namespace SupercellProxy
 {
     static class Extensions
     {
+        /// <summary>
+        /// Returns a socket's IP
+        /// </summary>
+        public static string GetIP(this Socket s) => ((IPEndPoint)s.RemoteEndPoint).Address.ToString();
+
         /// <summary>
         /// Makes the enum values readable
         /// </summary>
