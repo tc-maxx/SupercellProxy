@@ -30,6 +30,16 @@ namespace SupercellProxy
             ConfigurationManager.RefreshSection("appSettings");
         }
 
+
+        public static bool JSON_Logging
+        {
+            get
+            {
+                bool ret = false;
+                Boolean.TryParse(Get("JSON_Logging"), out ret);
+                return ret;
+            }
+        }
         /// <summary>
         /// Returns the host
         /// </summary>
@@ -70,20 +80,6 @@ namespace SupercellProxy
                     Program.WaitAndClose();
                     return Game.CLASH_ROYALE;
                  }                    
-            }
-        }
-
-        /// <summary>
-        /// Returns the WebAPI port
-        /// </summary>
-        public static int WebAPI_PORT
-        {
-            get
-            {
-                int ret;
-                if (!Int32.TryParse(Get("WebAPI_PORT"), out ret))
-                    ret = 5050;
-                return ret;
             }
         }
     }
