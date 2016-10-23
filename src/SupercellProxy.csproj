@@ -79,7 +79,6 @@
   <ItemGroup>
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\Game.cs" />
-    <Compile Include="Console\APK_Downloader.cs" />
     <Compile Include="Console\ConsoleArgs.cs" />
     <Compile Include="Crypto\Piranha\EnDecrypt.cs" />
     <Compile Include="Crypto\Piranha\Keys.cs" />

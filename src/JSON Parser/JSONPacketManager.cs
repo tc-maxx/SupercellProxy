@@ -47,7 +47,7 @@ namespace SupercellProxy
 
             if ((wrapper == null) || wrapper.ShouldLog || wrapper.ShouldExport)
             {
-                if ((wrapper == null) || wrapper.ShouldLog)
+                if (((wrapper == null) || wrapper.ShouldLog) && Config.JSON_Logging)
                     Logger.LogParsedPacket(pp);
 
                 if ((wrapper == null) || wrapper.ShouldExport)
@@ -90,7 +90,7 @@ namespace SupercellProxy
         public static void Initialize()
         {
             LoadDefinitions();
-            Logger.Log("Successfully load " + JsonPackets.Count + " Json Definitions into Memory.");
+            Logger.Log(JsonPackets.Count + " JSON definitions LOADED!");
         }
     }
 }
