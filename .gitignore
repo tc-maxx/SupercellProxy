@@ -10,7 +10,8 @@ src/obj
 *.vshost.exe
 *.vshost.exe.config
 bin/Logs/*.log
-bin/Packets/*.*
+bin/RawPackets/*.dmp
+bin/JsonPackets/*.json
 /src/bin/Release/Logs/22-10-2016.log
 /src/bin/Release/build.log
 /src/bin/Release/SupercellProxy.exe
