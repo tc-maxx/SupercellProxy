@@ -16,6 +16,21 @@ namespace SupercellProxy
     class Helper
     {
         /// <summary>
+        /// Creates required sub-directories
+        /// </summary>
+        public static void CheckDirectories()
+        {
+            if (!Directory.Exists("JsonDefinitions"))
+                Directory.CreateDirectory("JsonDefinitions");
+            if (!Directory.Exists("JsonPackets"))
+                Directory.CreateDirectory("JsonPackets");
+            if (!Directory.Exists("RawPackets"))
+                Directory.CreateDirectory("RawPackets");
+            if (!Directory.Exists("Logs"))
+                Directory.CreateDirectory("Logs");
+        }
+
+        /// <summary>
         /// Returns if the process is being debugged
         /// </summary>
         public static bool IsDebugging => Debugger.IsAttached || NativeCalls.IsDebuggerPresent();
@@ -68,7 +83,7 @@ namespace SupercellProxy
         {
             get
             {
-                return DateTime.Now.ToString();
+                return DateTime.Now.ToString("h:mm:ss");
             }
         }
 
@@ -78,6 +93,7 @@ namespace SupercellProxy
         public static void HideConsole()
         {
             NativeCalls.ShowWindow(NativeCalls.GetConsoleWindow(), 0);
-        }    
+           
+        }   
     }
 }

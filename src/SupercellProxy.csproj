@@ -80,9 +80,11 @@
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\Game.cs" />
     <Compile Include="Console\ConsoleArgs.cs" />
+    <Compile Include="Console\ConsoleCmdListener.cs" />
     <Compile Include="Crypto\Piranha\EnDecrypt.cs" />
     <Compile Include="Crypto\Piranha\Keys.cs" />
     <Compile Include="Crypto\Piranha\CustomNaCl\SecretBox.cs" />
+    <Compile Include="Exceptions\InvalidPublicKeyException.cs" />
     <Compile Include="External\Blake2b\Blake2B.cs" />
     <Compile Include="External\Blake2b\Blake2BConfig.cs" />
     <Compile Include="External\Blake2b\Blake2BCore-FullyUnrolled.cs" />
@@ -341,6 +343,7 @@
     <Compile Include="Logger\Logger.cs" />
     <!--<Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\LogType.cs" />-->
+    <Compile Include="Logger\LogType.cs" />
     <Compile Include="Net\Client.cs" />
     <Compile Include="Net\Packets\PacketType.cs" />
     <Compile Include="Net\Packets\PacketDestination.cs" />

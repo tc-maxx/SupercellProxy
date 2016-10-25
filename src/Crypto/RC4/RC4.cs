@@ -8,7 +8,7 @@ namespace SupercellProxy
     class RC4
     {
         public const int KeyBoxLength = 256;
-        public static byte[] Key => "FHSD6F86F67RT8FW78FW789WE78R9789WER6RE".ToByteArray();
+        public static byte[] Key => "fhsd6f86f67rt8fw78fw789we78r9789wer6re".ToByteArray();
 
         /// <summary>
         /// Encrypts a packet with RC4

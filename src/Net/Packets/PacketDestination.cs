@@ -3,7 +3,7 @@
 namespace SupercellProxy
 {
     /// <summary>
-    /// Specifies if a packet is client/server sided
+    /// Specifies if a packet is client- or serversided
     /// </summary>
     public enum PacketDestination
     {

@@ -1,11 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace SupercellProxy
 {
     class Keys
     {
-        private static WebClient KeyDownloader = new WebClient();
+        // Constant public key length
+        private const int PublicKeyLength = 32;
+        private static Dictionary<Game, string> KeyVersions = new Dictionary<Game, string>();
 
         /// <summary>
         /// The generated private key, according to the modded public key.
@@ -21,29 +26,57 @@ namespace SupercellProxy
 
         /// <summary>
         /// The original, unmodified public key.
+        /// Needed for SecretBox.Encrypt() & SecretBox.Decrypt()
         /// </summary>
-        public static byte[] OriginalPublicKey { get; set; }
-
+        public static byte[] OriginalPublicKey = new byte[PublicKeyLength];
 
         /// <summary>
-        /// Downloads the latest public keys from InfinityModding
+        /// Sets the original public key
         /// </summary>
-        public static void GetPublicKey()
+        public static void SetPublicKey()
         {
-            /* CoC 8.332.16  = "BB9CA4C6B52ECDB40267C3BCCA03679201A403EF6230B9E488DB949B58BC7479".ToByteArray();
-               CR 1.5.0  = "BBDBA8653396D1DF84EFAEA923ECD150D15EB526A46A6C39B53DAC974FFF3829".ToByteArray();
-               BB 27.136  = "3BF256F1C9457F4465625DBA145F2BA2F65B64338351590E796E8119E648755D".ToByteArray();
-             */
-            if (Config.Game == Game.BOOM_BEACH)
-                OriginalPublicKey = "3BF256F1C9457F4465625DBA145F2BA2F65B64338351590E796E8119E648755D".ToByteArray();
-            else if (Config.Game == Game.CLASH_OF_CLANS)
-                OriginalPublicKey = "349CE78B78A06A4E94645435ACBA1DFFFC40CC2276558ED2D118F1343A197876".ToByteArray();
-            else if (Config.Game == Game.CLASH_ROYALE)
-                OriginalPublicKey = "BBDBA8653396D1DF84EFAEA923ECD150D15EB526A46A6C39B53DAC974FFF3829".ToByteArray();
+            try
+            {
+                // Add Versions
+                KeyVersions.Add(Game.CLASH_OF_CLANS, "8.551.4");
+                KeyVersions.Add(Game.BOOM_BEACH, "27.136");
+                KeyVersions.Add(Game.CLASH_ROYALE, "1.5.0");
 
-            Logger.Log("Latest public key for " + Config.Game.ReadableName() + " initialized:");
-            Logger.Log(OriginalPublicKey.ToHexString());
+                // Set public key
+                switch (Config.Game)
+                {
+                    case Game.CLASH_OF_CLANS:
+                        OriginalPublicKey = "349ce78b78a06a4e94645435acba1dfffc40cc2276558ed2d118f1343a197876".ToByteArray();
+                        break;
+                    case Game.BOOM_BEACH:
+                        OriginalPublicKey = "3bf256f1c9457f4465625dba145f2ba2f65b64338351590e796e8119e648755d".ToByteArray();
+                        break;
+                    case Game.CLASH_ROYALE:
+                        OriginalPublicKey = "bbdba8653396d1df84efaea923ecd150d15eb526a46a6c39b53dac974fff3829".ToByteArray();
+                        break;
+                    default:
+                        throw new InvalidPublicKeyException("Unknown game, no public key available..");
+                        break;
+                }
+                Logger.Log("Public key set [" + OriginalPublicKey.ToHexString() + "]");
+
+                /* Compare Versions
+                Logger.Log("Comparing public keys..");
+
+                var API_URL = "http://carreto.pt/tools/android-store-version/?package=com.supercell." +
+                               Config.Game.ToString().Replace("_", "").ToLower();
+                JObject obj = JObject.Parse(new WebClient().DownloadString(API_URL));
+                string Version = (string)obj["version"];
+
+                if (Version.Equals(KeyVersions[Config.Game]))
+                    Logger.Log("The configured public key is up-to-date.");
+                else
+                    Logger.Log("The configured public key is OUTDATED! Create a GitHub issue.", LogType.WARNING);*/
+            }
+            catch(Exception ex)
+            {
+                Logger.Log("Failed to set/compare publickey (" + ex.GetType() + ")", LogType.EXCEPTION);
+            }
         }
     }
-
 }

@@ -54,6 +54,8 @@ namespace SupercellProxy
         {
             ClientSocket.Disconnect(false);
             ServerSocket.Disconnect(false);
+            ClientSocket = null;
+            ServerSocket = null;
         }    
     }
 }

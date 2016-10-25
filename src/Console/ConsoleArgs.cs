@@ -59,21 +59,21 @@ namespace SupercellProxy
                         switch (RemovePrefix(Arg))
                         {
                             case "help":
-                                Logger.CenterStr("=> Argument usage <=");
+                                Logger.CenterString("=> Argument usage <=");
                                 Console.Write(Environment.NewLine);
-                                Logger.CenterStr("-help -> Displays this.");
-                                Logger.CenterStr("-ver  -> Shows detailed version info");
+                                Logger.CenterString("-help -> Displays this.");
+                                Logger.CenterString("-ver  -> Shows detailed version info");
                                 break;
                             case "ver":
-                                Logger.CenterStr("=> Version <=");
+                                Logger.CenterString("=> Version <=");
                                 Console.Write(Environment.NewLine);
-                                Logger.CenterStr("SupercellProxy Public Version " + Helper.AssemblyVersion);
-                                Logger.CenterStr("Copyright © 2016, expl0itr");
-                                Logger.CenterStr("https://opensource.org/licenses/MIT/");
+                                Logger.CenterString("SupercellProxy Public Version " + Helper.AssemblyVersion);
+                                Logger.CenterString("Copyright © 2016, expl0itr");
+                                Logger.CenterString("https://opensource.org/licenses/MIT/");
                                 break;
                             // more args...
                             default:
-                                Logger.CenterStr("!!! Unknown arg: " + Arg + " !!!");
+                                Logger.CenterString("!!! Unknown arg: " + Arg + " !!!");
                                 break;
                         }
                         Program.Close();

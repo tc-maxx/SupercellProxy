@@ -3,25 +3,25 @@ using Newtonsoft.Json;
 
 namespace SupercellProxy
 {
-    internal class ParsedPacket
+    class ParsedPacket
     {
         /// <summary>
-        ///     The Packet ID
+        /// PacketID
         /// </summary>
         public int PacketID { get; set; }
 
         /// <summary>
-        ///     The Payload Length
+        /// The Payload length
         /// </summary>
         public int PayloadLength { get; set; }
 
         /// <summary>
-        ///     The Packet Name
+        /// The packet name
         /// </summary>
         public string PacketName { get; set; }
 
         /// <summary>
-        ///     The parsed Fields
+        /// Parsed fields
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ParsedField<object>> ParsedFields { get; set; }

@@ -1,0 +1,12 @@
+{
+  "PacketID": 20100,
+  "PacketName": "ServerHelloMessage",
+  "ShouldLog": true,
+  "ShouldExport": true,
+  "Fields": [
+    {
+      "FieldName": "SessionKey",
+      "FieldType": "SupercellString"
+	}
+  ]
+}

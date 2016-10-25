@@ -5,14 +5,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SupercellProxy
 {
-    internal class JsonParseHelper
+    class JsonParseHelper
     {
         /// <summary>
-        ///     Calculates the lenght in bytes of an object
-        ///     and returns the size
+        /// Calculates the length in bytes
         /// </summary>
-        /// <param name="TestObject"></param>
-        /// <returns></returns>
         private static int GetObjectSize(object TestObject)
         {
             if (TestObject != null)
@@ -28,6 +25,9 @@ namespace SupercellProxy
                 return 0;
         }
 
+        /// <summary>
+        /// Replaces wildcards
+        /// </summary>
         private static string ReplaceWildcards(string toSearch, List<ParsedField<object>> ParsedFields)
         {
             var result = ParsedFields.Find(x => x.FieldName == toSearch);
@@ -40,12 +40,18 @@ namespace SupercellProxy
             return null;
         }
 
-        private static bool isNumber(string toCheck)
+        /// <summary>
+        /// Tries to parse a string
+        /// </summary>
+        private static bool IsNumber(string toCheck)
         {
             int temp;
             return int.TryParse(toCheck, out temp);
         }
 
+        /// <summary>
+        /// Parses a packet
+        /// </summary>
         public static ParsedPacket ParsePacket(JSONPacketWrapper wrapper, Packet p)
         {
             var pack = new ParsedPacket();
@@ -69,19 +75,18 @@ namespace SupercellProxy
 
                             if (replaced != null)
                             {
-                                if (isNumber(replaced))
+                                if (IsNumber(replaced))
                                 {
                                     toRead = Convert.ToInt32(replaced);
                                 }
                             }
                             else
                             {
-                                if (isNumber(field.BytesToRead))
+                                if (IsNumber(field.BytesToRead))
                                 {
                                     toRead = Convert.ToInt32(field.BytesToRead);
                                 }
                             }
-
                             if (toRead > 0)
                             {
                                 var value = br.ReadBytes(toRead);
@@ -98,7 +103,6 @@ namespace SupercellProxy
                         else
                         {
                             var value = br.ReadField(field.FieldType);
-
                             parsedFields.Add(new ParsedField<object>
                             {
                                 FieldLength = GetObjectSize(value),
@@ -112,13 +116,9 @@ namespace SupercellProxy
                     {
                         Logger.Log("Exception occured while Parsing Packet: " + ex);
                     }
-
-                }
-                    
+                }                   
             }
-
             pack.ParsedFields = parsedFields.Count > 0 ? parsedFields : null;
-
             return pack;
         }
     }

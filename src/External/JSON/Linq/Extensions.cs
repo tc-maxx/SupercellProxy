@@ -213,7 +213,6 @@ namespace Newtonsoft.Json.Linq
             yield break;
         }
 
-        //TODO
         //public static IEnumerable<T> InDocumentOrder<T>(this IEnumerable<T> source) where T : JObject;
 
         /// <summary>
@@ -262,7 +261,6 @@ namespace Newtonsoft.Json.Linq
                 // don't want to cast JValue to its interfaces, want to get the internal value
                 && typeof(U) != typeof(IComparable) && typeof(U) != typeof(IFormattable))
             {
-                // HACK
                 return (U)(object)token;
             }
             else
@@ -294,7 +292,6 @@ namespace Newtonsoft.Json.Linq
             }
         }
 
-        //TODO
         //public static void Remove<T>(this IEnumerable<T> source) where T : JContainer;
 
         /// <summary>

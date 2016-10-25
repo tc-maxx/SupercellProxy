@@ -565,7 +565,7 @@ namespace Newtonsoft.Json.Linq
 
         ICollection<string> IDictionary<string, JToken>.Keys
         {
-            // todo: make order the collection returned match JObject order
+           
             get { return _properties.Keys; }
         }
 
@@ -609,7 +609,6 @@ namespace Newtonsoft.Json.Linq
         {
             get
             {
-                // todo: need to wrap _properties.Values with a collection to get the JProperty value
                 throw new NotImplementedException();
             }
         }

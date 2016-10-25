@@ -3,7 +3,10 @@ using Newtonsoft.Json.Converters;
 
 namespace SupercellProxy
 {
-    internal enum FieldType
+    /// <summary>
+    /// Field types
+    /// </summary>
+    enum FieldType
     {
         String,
         SupercellString,
@@ -24,21 +27,21 @@ namespace SupercellProxy
         UShort
     }
 
-    internal class JSONPacketField
+    class JSONPacketField
     {
         /// <summary>
-        ///     The Name of the Field
+        /// Fieldname
         /// </summary>
         public string FieldName { get; set; }
 
         /// <summary>
-        /// If Field Type is Bytes specifify Length to read
+        /// Byte count
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string BytesToRead { get; set; }
 
         /// <summary>
-        ///     The Data Type of the Field
+        /// Field datatype
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public FieldType FieldType { get; set; }

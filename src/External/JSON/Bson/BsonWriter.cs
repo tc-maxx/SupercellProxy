@@ -507,7 +507,6 @@ namespace Newtonsoft.Json.Bson
                 throw JsonWriterException.Create(this, "An object id must be 12 bytes", null);
             }
 
-            // hack to update the writer state
             UpdateScopeWithFinishedValue();
             AutoComplete(JsonToken.Undefined);
             AddValue(value, BsonType.Oid);
@@ -522,7 +521,6 @@ namespace Newtonsoft.Json.Bson
         {
             ValidationUtils.ArgumentNotNull(pattern, nameof(pattern));
 
-            // hack to update the writer state
             UpdateScopeWithFinishedValue();
             AutoComplete(JsonToken.Undefined);
             AddToken(new BsonRegex(pattern, options));

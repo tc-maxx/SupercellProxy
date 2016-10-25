@@ -2,95 +2,87 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace SupercellProxy
 {
-    internal class JSONPacketManager
+    class JSONPacketManager
     {
         public static Dictionary<int, JSONPacketWrapper> JsonPackets = new Dictionary<int, JSONPacketWrapper>();
+        private static List<ParsedField<object>> Fields = new List<ParsedField<object>>();
+        private static ParsedPacket pp;
+        private static JSONPacketWrapper wrapper;
 
         /// <summary>
-        ///     Handle the Packet ( Parse Fields, Log Fields, Export as JSON )
+        /// Handles packet
         /// </summary>
-        /// <param name="packet">The Instance of the Packet to Handle</param>
         public static void HandlePacket(Packet packet)
         {
-            ParsedPacket pp;
-            JSONPacketWrapper wrapper = null;
-
+            // Known packet => Parse it
             if (JsonPackets.ContainsKey(packet.ID))
             {
                 wrapper = JsonPackets[packet.ID];
-
                 pp = JsonParseHelper.ParsePacket(wrapper, packet);
             }
+            // Unknown packet => Save payload
             else
             {
                 pp = new ParsedPacket();
-
-                var psfields = new List<ParsedField<object>>();
-
                 pp.PacketID = packet.ID;
                 pp.PacketName = "Unknown";
                 pp.PayloadLength = packet.DecryptedPayload.Length;
+                pp.ParsedFields = Fields;
 
-                psfields.Add(new ParsedField<object>
+                // Payload
+                pp.ParsedFields.Add(new ParsedField<object>
                 {
                     FieldLength = packet.DecryptedPayload.Length,
                     FieldName = "Payload",
                     FieldType = FieldType.String,
-                    FieldValue = packet.DecryptedPayload.ToHexString().Replace("-", "")
+                    FieldValue = packet.DecryptedPayload.ToHexString()
                 });
-
-                pp.ParsedFields = psfields;
             }
 
-            if ((wrapper == null) || wrapper.ShouldLog || wrapper.ShouldExport)
-            {
-                if (((wrapper == null) || wrapper.ShouldLog) && Config.JSON_Logging)
-                    Logger.LogParsedPacket(pp);
+            // Check if the packet is known
+            if (Config.JSON_Logging && pp.PacketName != "Unknown")
+            {                          
+                foreach (var v in pp.ParsedFields)
+                    Logger.Log(v.FieldName + " : " + v.FieldValue, LogType.JSON);
 
-                if ((wrapper == null) || wrapper.ShouldExport)
+                var path = @"JsonPackets\\" + Config.Game + "_" + pp.PacketID + "_" +
+                           string.Format("{0:dd-MM_hh-mm-ss}", DateTime.Now) + ".json";
+                using (var file = File.CreateText(path))
                 {
-                    var path = @"Packets\\" + Config.Game + "_" + pp.PacketID + "_" +
-                               string.Format("{0:dd-MM_hh-mm-ss}", DateTime.Now) + ".json";
-
-                    using (var file = File.CreateText(path))
-                    {
-                        var serializer = new JsonSerializer();
-                        serializer.Formatting = Formatting.Indented;
-                        serializer.Serialize(file, pp);
-                    }
+                    var serializer = new JsonSerializer();
+                    serializer.Formatting = Formatting.Indented;
+                    serializer.Serialize(file, pp);
                 }
-            }
+            }        
         }
 
         /// <summary>
-        ///     Loads all Packet Definitions into the List
+        /// Loads all packet definitions
         /// </summary>
         public static void LoadDefinitions()
         {
-            var files = Directory.GetFiles(Environment.CurrentDirectory + @"\\JsonPackets\\", "*.json",
-                SearchOption.AllDirectories);
-
+            // Loop
+            var files = Directory.GetFiles("JsonDefinitions", "*.json", SearchOption.AllDirectories);
             foreach (var filePath in files)
+            {
+                // Open
                 using (var file = File.OpenText(filePath))
                 {
+                    // Deserialize
                     var serializer = new JsonSerializer();
+                    var wrapper = (JSONPacketWrapper)serializer.Deserialize(file, typeof(JSONPacketWrapper));
 
-                    var wrapper = (JSONPacketWrapper) serializer.Deserialize(file, typeof(JSONPacketWrapper));
-
-                    JsonPackets.Add(wrapper.PacketID, wrapper);
+                    // Check existence
+                    if (!(JsonPackets.ContainsKey(wrapper.PacketID)))
+                        JsonPackets.Add(wrapper.PacketID, wrapper);
                 }
-        }
+            }
 
-        /// <summary>
-        ///     Initialize Packets
-        /// </summary>
-        public static void Initialize()
-        {
-            LoadDefinitions();
-            Logger.Log(JsonPackets.Count + " JSON definitions LOADED!");
+            Logger.Log("Definitions loaded (" + JsonPackets.Count + " packets)", LogType.JSON);
         }
     }
 }

@@ -1,116 +1,71 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace SupercellProxy
-{
-    enum LogType
+{ 
+    class Logger
     {
-        INFO, 
-        WARNING,
-        CONFIG, 
-        PACKET, 
-        API, 
-        FIELD,
-        PACKETINFO,
-        EXCEPTION,
-    }
-
-    static class Logger
-    {
-        static Logger()
+        /// <summary>
+        /// Centers a string 
+        /// </summary>
+        public static void CenterString(string str)
         {
-            if (!Directory.Exists("Logs"))
-                Directory.CreateDirectory("Logs");
-        }
-
-        public static void CenterStr(string str)
-        {
-            // (window width - strlen) / 2 = center
             Console.SetCursorPosition((Console.WindowWidth - str.Length) / 2, Console.CursorTop);
             Console.WriteLine(str);
-            // reset
             Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
         }
-        
-        private static void LogParsed(string prefix, string toLog, LogType l)
-        {
-
-            Console.ForegroundColor = l == LogType.FIELD ? ConsoleColor.Blue : l == LogType.PACKETINFO ? ConsoleColor.Magenta : ConsoleColor.Black;
-            Console.Write("[{0}] ", prefix);
-            Console.ResetColor();          
-            Console.WriteLine(toLog);
-        }
-
-        public static void LogParsedPacket(ParsedPacket pp)
-        {
-            Console.WriteLine("---------------------------------------------------------------------------------------------");
-            LogParsed(pp.PacketName, "PacketID: " + pp.PacketID, LogType.PACKETINFO);
-            LogParsed(pp.PacketName, "PayloadLength: " + pp.PayloadLength, LogType.PACKETINFO);
-
-            if (pp.ParsedFields != null)
-            {
-                foreach (var v in pp.ParsedFields)
-                {
-                    LogParsed(v.FieldName, "FieldLength: " + v.FieldLength, LogType.FIELD);
-                    LogParsed(v.FieldName, "FieldType: " + v.FieldType, LogType.FIELD);
-                    LogParsed(v.FieldName, "FieldValue: " + v.FieldValue, LogType.FIELD);
-                }
-            }
-        }
-
-    
+            
         /// <summary>
         /// Logs passed text
         /// </summary>
-        public static void Log(string text, LogType type = LogType.INFO)
+        public static void Log(string text, LogType logtype = LogType.INFO, ConsoleColor color = 0)
         {
-            // Print line out
-            switch (type)
+            // Reset actual line
+            Console.Write("\r");
+
+            // Determine logtype and set appropriate color
+            switch (logtype)
             {
                 case LogType.INFO:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
+                    { color = ConsoleColor.Green; break; }      
                 case LogType.WARNING:
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    break;
+                    { color = ConsoleColor.DarkYellow; break; }
                 case LogType.EXCEPTION:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case LogType.API:
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    break;
+                    { color = ConsoleColor.Red; break; }
                 case LogType.PACKET:
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    break;
+                    { color = ConsoleColor.Magenta; break; }
                 case LogType.CONFIG:
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    break;
+                    { color = ConsoleColor.DarkCyan; break; }
+                case LogType.JSON:
+                    { color = ConsoleColor.Cyan; break; }
             }
-
-            Console.Write("[" + type + "] ");
+            Console.ForegroundColor = color;
+   
+            // Colored Prefix - Text
+            Console.Write(logtype);
             Console.ResetColor();
-            Console.WriteLine(text);
+            Console.WriteLine(" - " + text);
 
-            // Log line to file
-            string path = Environment.CurrentDirectory + @"\\Logs\\" + DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy") + ".log";
-            using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
-            {
-                using (StreamWriter StreamWriter = new StreamWriter(fs))
-                {
-                    StreamWriter.WriteLine("[" + DateTime.UtcNow.ToLocalTime().ToString("hh-mm-ss") + "-" + type + "] " + text);
-                    StreamWriter.Close();
-                }
-            }
+            // Save text to file
+            SaveToFile(text, logtype);
         }
 
         /// <summary>
-        /// Logs a packet
+        /// Saves a string including the logtype to a file
         /// </summary>
-        /// <param name="p"></param>
-        public static void LogPacket(Packet p)
+        private static void SaveToFile(string text, LogType logtype)
         {
-
+            var path = "Logs\\" + DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy") + ".log";
+            using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine("[" + DateTime.UtcNow.ToLocalTime().ToString("hh-mm-ss") + "-" + logtype + "]" + text);
+                    sw.Close();
+                }
+            }
         }
     }
 }

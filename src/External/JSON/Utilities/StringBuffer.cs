@@ -110,7 +110,6 @@ namespace Newtonsoft.Json.Utilities
 
         public string ToString(int start, int length)
         {
-            // TODO: validation
             return new string(_buffer, start, length);
         }
 

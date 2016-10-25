@@ -8,25 +8,25 @@ namespace SupercellProxy
 {
     class Program
     {
-        private static void SetupConsole(string[] args)
-        {
-            // Parse console args
-            new ConsoleArgs(args).Parse();
-
-            // Console title
-            Console.Title =  "▁ ▂ ▄ ▅ ▆ ▇ █ SupercellProxy  █ ▇ ▆ ▅ ▄ ▂ ▁";
-
-            // Disable resizing/maximizing
-            NativeCalls.DisableMenus();
-        }
-
         /// <summary>
         /// Entry point
         /// </summary>
         static void Main(string[] args)
         {
-            SetupConsole(args);           
+            // Parse console args
+            new ConsoleArgs(args).Parse();
+
+            // Console title
+            Console.Title = "▁ ▂ ▄ ▅ ▆ ▇ █     SupercellProxy - " + Helper.AssemblyVersion + "     █ ▇ ▆ ▅ ▄ ▂ ▁";
+
+            // Disable resizing/maximizing
+            NativeCalls.DisableMenus();
+
+            // Start Proxy
             Proxy.Start();
+
+            // Start command listener
+            new ConsoleCmdListener();
         }
 
         /// <summary>

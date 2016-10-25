@@ -8,20 +8,13 @@ using System.Timers;
 
 namespace SupercellProxy
 {
-    static class Proxy
+    class Proxy
     {
+        private static Thread AcceptThread; 
         public static List<Client> ClientPool = new List<Client>();
+        public const int Backlog = 100;
+        public const int Port = 9339;
 
-        // @FICTURE7 ;)
-        static Proxy()
-        {
-            if (!Directory.Exists(Environment.CurrentDirectory + @"\\JsonPackets\\"))
-                Directory.CreateDirectory(Environment.CurrentDirectory + @"\\JsonPackets\\");
-
-            if (!Directory.Exists("Packets"))
-                Directory.CreateDirectory("Packets");
-        }
-        
         /// <summary>
         /// Starts the proxy
         /// </summary>
@@ -29,67 +22,69 @@ namespace SupercellProxy
         {
             try
             {
+                // Check dirs
+                Helper.CheckDirectories();
+
                 // ASCII art
                 Console.ForegroundColor = Helper.ChooseRandomColor();
-                Logger.CenterStr(@"  _____                                 ____ ");
-                Logger.CenterStr(@" / ___/__  ______  ___  _____________  / / / ");
-                Logger.CenterStr(@" \__ \/ / / / __ \/ _ \/ ___/ ___/ _ \/ / /  ");
-                Logger.CenterStr(@"  _/ / /_/ / /_/ /  __/ /  / /__/  __/ / /   ");
-                Logger.CenterStr(@"/____/\__,_/ .___/\___/_/   \___/\___/_/_/   ");
-                Logger.CenterStr(@"          /_/____                            ");
-                Logger.CenterStr(@"            / __ \_________  _  ____  __      ");
-                Logger.CenterStr(@"           / /_/ / ___/ __ \| |/_/ / / /      ");
-                Logger.CenterStr(@"          / ____/ /  / /_/ />  </ /_/ /      ");
-                Logger.CenterStr(@"         /_/   /_/   \____/_/|_|\__, /       ");
-                Logger.CenterStr(@"                               /____/        ");
-                Logger.CenterStr(@"                                             ");
-                Logger.CenterStr(Helper.AssemblyVersion);
-                Logger.CenterStr("Coded by expl0itr");
-                Logger.CenterStr("Apache Version 2.0 License - © 2016");
-                Logger.CenterStr("https://github.com/expl0itr/SupercellProxy/");
+                Logger.CenterString(@"  _____                                 ____ ");
+                Logger.CenterString(@" / ___/__  ______  ___  _____________  / / / ");
+                Logger.CenterString(@" \__ \/ / / / __ \/ _ \/ ___/ ___/ _ \/ / /  ");
+                Logger.CenterString(@"  _/ / /_/ / /_/ /  __/ /  / /__/  __/ / /   ");
+                Logger.CenterString(@"/____/\__,_/ .___/\___/_/   \___/\___/_/_/   ");
+                Logger.CenterString(@"          /_/____                            ");
+                Logger.CenterString(@"            / __ \_________  _  ____  __      ");
+                Logger.CenterString(@"           / /_/ / ___/ __ \| |/_/ / / /      ");
+                Logger.CenterString(@"          / ____/ /  / /_/ />  </ /_/ /      ");
+                Logger.CenterString(@"         /_/   /_/   \____/_/|_|\__, /       ");
+                Logger.CenterString(@"                               /____/        ");
+                Logger.CenterString(@"                                             ");
+                Logger.CenterString(Helper.AssemblyVersion);
+                Logger.CenterString("Coded by expl0itr");
+                Logger.CenterString("Apache Version 2.0 License - © 2016");
+                Logger.CenterString("https://github.com/expl0itr/SupercellProxy/");
                 Console.Write(Environment.NewLine);
                 Console.ResetColor();
 
                 // Show configuration values
                 Console.Write(Environment.NewLine);
-                Logger.CenterStr("Game: " + Config.Game.ReadableName());
-                Logger.CenterStr("Host: " + Config.Host);
-                Logger.CenterStr("JSON Logging: " + ((Config.JSON_Logging) ? "Yes" : "No"));
+                Logger.CenterString("===============================");
+                Logger.CenterString(Config.Game.ReadableName());
+                Logger.CenterString(Config.Host);
+                Logger.CenterString("Local IP: " + Helper.LocalNetworkIP);
+                Logger.CenterString("===============================");
                 Console.Write(Environment.NewLine);
 
-                // Start the proxy
-                Logger.Log("Starting the proxy..");
-
-                // Get latest public key
-                Keys.GetPublicKey();
-
+                // Set latest public key
+                Keys.SetPublicKey();
+               
                 // Bind a new socket to the local EP     
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 9339);
+                IPEndPoint EP = new IPEndPoint(IPAddress.Any, Port);
                 Socket ClientListener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                ClientListener.Bind(endPoint);
-                ClientListener.Listen(100);
+                ClientListener.Bind(EP);
+                ClientListener.Listen(Backlog);
 
                 // Initialize the JSON Packets
-                JSONPacketManager.Initialize();
+                JSONPacketManager.LoadDefinitions();
 
                 // Listen for connections
-                Logger.Log("Connect to " + Helper.LocalNetworkIP + " now.");
-                new Thread(() =>
+                AcceptThread = new Thread(() =>
                 {
                     while (true)
                     {
                         Socket ClientSocket = ClientListener.Accept();
-                        Client client = new Client(ClientSocket);
-                        ClientPool.Add(client);
-
-                        Logger.Log("Remote connection #" + (ClientPool.ToArray().Length) + " (" + ClientSocket.GetIP() + "), enqueuing..");
-                        client.Enqueue();
+                        Client c = new Client(ClientSocket);
+                        ClientPool.Add(c);
+                        Logger.Log("A client connected (" + ClientSocket.GetIP() + ")! Enqueuing..");
+                        c.Enqueue();
                     }
-                }).Start();
+                });
+                AcceptThread.Start();
+                Logger.Log("Proxy started. Waiting for incoming connections..");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Logger.Log("Failed to start the proxy (" + ex.GetType() + ")!");        
+                Logger.Log("Failed to start the proxy (" + ex.GetType() + ")!");
             }
         }
 

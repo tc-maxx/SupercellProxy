@@ -177,13 +177,12 @@ namespace SupercellProxy
                         RoyalePackets.TryGetValue(messageID, out ret);
                     break;
                 case Game.CLASH_OF_CLANS:
-                    // TO DO
+                    //TODO
                     break;
                 case Game.BOOM_BEACH:
-                    // TO DO
+                    //TODO
                     break;
             }
-
             return ret;
         }
     }

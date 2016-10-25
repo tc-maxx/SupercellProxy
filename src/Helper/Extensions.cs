@@ -13,6 +13,14 @@ namespace SupercellProxy
     static class Extensions
     {
         /// <summary>
+        /// Truncates a string
+        /// </summary>
+        public static string Truncate(this string str, int maxLen)
+        {
+            return (str.Length > maxLen) ? str.Substring(0, maxLen) + "..." : str;
+        }
+
+        /// <summary>
         /// Returns a socket's IP
         /// </summary>
         public static string GetIP(this Socket s) => ((IPEndPoint)s.RemoteEndPoint).Address.ToString();
@@ -51,7 +59,7 @@ namespace SupercellProxy
         /// </summary>
         public static string ToHexString(this byte[] ba)
         {
-            return BitConverter.ToString(ba);
+            return BitConverter.ToString(ba).Replace("-", "").ToLower();
         }
 
         public static object ReadField(this BinaryReader br, FieldType type)
@@ -109,8 +117,6 @@ namespace SupercellProxy
                     field = br.ReadUShortWithEndian();
                     break;
             }
-
-
             return field;
         }
 
@@ -192,6 +198,7 @@ namespace SupercellProxy
             return BitConverter.ToInt32(a32, 0);
         }
 
+        //TODO!!!
         public static int ReadVInt(this BinaryReader br)
         {
             int v5;
@@ -261,6 +268,7 @@ namespace SupercellProxy
             return _LR;
         }
 
+        //TODO!!!
         public static long ReadVInt64(this BinaryReader br)
         {
             byte temp = br.ReadByte();

@@ -9,12 +9,6 @@ namespace SupercellProxy
 {
     class Packet
     {
-        static Packet()
-        {
-            if (!Directory.Exists("Packets"))
-                Directory.CreateDirectory("Packets");
-        }
-
         private byte[] rawPacket;
         private int packetID;
         private int payloadLen;
@@ -62,13 +56,12 @@ namespace SupercellProxy
         {
             try
             {
-                var time = string.Format("{0:dd-MM_hh-mm-ss}", DateTime.Now);
-                File.WriteAllBytes(@"Packets\\" + Config.Game + "_" + ID + "_" + time + ".bin", DecryptedPayload);
+                File.WriteAllBytes(@"RawPackets\\" + Config.Game + "_" + ID + "_" +
+                                   string.Format("{0:dd-MM_hh-mm-ss}", DateTime.Now) + ".dmp", DecryptedPayload);
             }
             catch (Exception ex)
             {
                 Logger.Log("Failed to export packet " + ID + " (" + ex.GetType() + ")!", LogType.EXCEPTION);
-                Logger.Log("Please check if the packet filename is valid.");
             }
         }
 

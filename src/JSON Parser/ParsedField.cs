@@ -3,26 +3,26 @@ using Newtonsoft.Json.Converters;
 
 namespace SupercellProxy
 {
-    internal class ParsedField<T>
+    class ParsedField<T>
     {
         /// <summary>
-        /// Name of the Field
+        /// Name of the field
         /// </summary>
         public string FieldName { get; set; }
 
         /// <summary>
-        /// Length of the Field in Bytes
+        /// Length of the field in bytes
         /// </summary>
         public int FieldLength { get; set; }
 
         /// <summary>
-        /// Datatype of the Field
+        /// Datatype of the field
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public FieldType FieldType { get; set; }
 
         /// <summary>
-        /// The Parsed Value 
+        /// The parsed Value 
         /// </summary>
         public T FieldValue { get; set; }
     }

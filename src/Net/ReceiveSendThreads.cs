@@ -24,7 +24,7 @@ namespace SupercellProxy
 
         // PacketBufs
         private byte[] ClientBuf, ServerBuf;
-            
+
         public static bool Running = false;
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SupercellProxy
 
                     // Initialize Client Buffer
                     ClientBuf = new byte[PacketLength + HEADER_SIZE];
-                    
+
                     // Apply header
                     for (int i = 0; i < HEADER_SIZE; i++)
                         ClientBuf[i] = ClientHeader[i];
@@ -59,11 +59,12 @@ namespace SupercellProxy
                     // Fill Client Buffer
                     ClientSocket.Receive(ClientBuf, HEADER_SIZE, PacketLength, SocketFlags.None);
 
-                    // Parse Packet
+                    // Parse & Export Packet
                     Packet ClientPacket = new Packet(ClientBuf, PacketDestination.FROM_CLIENT);
+                    ClientPacket.Export();
 
                     // Log Packet
-                    Logger.Log(ClientPacket.ID + " | " + ClientPacket.DecryptedPayload.Length + " bytes | C", LogType.PACKET);
+                    Logger.Log(ClientPacket.ID + " | " + ClientPacket.DecryptedPayload.Length + " bytes", LogType.PACKET);
 
                     JSONPacketManager.HandlePacket(ClientPacket);
 
@@ -90,11 +91,12 @@ namespace SupercellProxy
                     // Fill Server Buffer
                     ServerSocket.Receive(ServerBuf, HEADER_SIZE, PacketLength, SocketFlags.None);
 
-                    // Parse Packet
+                    // Parse & Export Packet
                     Packet ServerPacket = new Packet(ServerBuf, PacketDestination.FROM_SERVER);
+                    ServerPacket.Export();
 
                     // Log Packet
-                    Logger.Log(ServerPacket.ID + " | " + ServerPacket.DecryptedPayload.Length + " bytes | S", LogType.PACKET);
+                    Logger.Log(ServerPacket.ID + " | " + ServerPacket.DecryptedPayload.Length + " bytes", LogType.PACKET);
 
                     JSONPacketManager.HandlePacket(ServerPacket);
 
@@ -106,21 +108,6 @@ namespace SupercellProxy
             ClientThread.Start();
             ServerThread.Start();
             Running = true;
-        }
-
-        /// <summary>
-        /// Aborts both threads
-        /// </summary>
-        public void Abort()
-        {
-            if (Running)
-            {
-                ClientThread.Abort();
-                ServerThread.Abort();
-                Logger.Log("Client- and Serverthread aborted.");
-            }
-            else
-                Logger.Log("Attempted to stop 2 not-running threads.", LogType.WARNING);
         }
     }
 }
